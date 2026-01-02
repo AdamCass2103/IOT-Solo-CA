@@ -4,7 +4,11 @@ from models import db, MotionEvent
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-app = Flask(__name__)
+# Tell Flask where the templates are
+template_dir = os.path.join(BASE_DIR, '..', 'frontend', 'templates')
+static_dir = os.path.join(BASE_DIR, '..', 'frontend', 'static')
+
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
 # Config (ready for AWS later)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-secret-key")
