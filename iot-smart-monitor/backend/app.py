@@ -29,6 +29,15 @@ db.init_app(app)
 def login():
     return render_template("login.html")
 
+@app.route("/signup")
+def signup():
+    return render_template("signup.html")
+
+# Temporary dashboard shortcut (no login required)
+@app.route("/dashboard-shortcut")
+def dashboard_shortcut():
+    return redirect(url_for("dashboard"))
+
 @app.route("/dashboard")
 def dashboard():
     events = MotionEvent.query.order_by(MotionEvent.timestamp.desc()).all()
