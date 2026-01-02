@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Live Motion Events</h1>
+
+    <a href="{{ url_for('test_insert') }}">Simulate Motion</a>
+
+    <ul>
+        {% for event in events %}
+            <li>
+                Motion detected at {{ event.timestamp }}
+            </li>
+        {% else %}
+            <li>No motion detected yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('history') }}">View History</a>
+</body>
+</html>

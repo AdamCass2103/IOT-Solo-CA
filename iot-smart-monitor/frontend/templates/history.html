@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Motion History</title>
+</head>
+<body>
+    <h1>Motion History</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Detected</th>
+            <th>Timestamp</th>
+        </tr>
+
+        {% for event in events %}
+        <tr>
+            <td>{{ event.id }}</td>
+            <td>{{ event.detected }}</td>
+            <td>{{ event.timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
