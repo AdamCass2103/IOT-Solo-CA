@@ -1,81 +1,119 @@
-/* Reset and base */
+/* Reset & general */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f6f8;
     color: #333;
-    margin: 0;
     padding: 20px;
 }
 
-/* Headings */
-h1 {
-    color: #2c3e50;
+/* Header */
+h1, h2 {
     margin-bottom: 20px;
-    font-size: 2rem;
 }
 
-/* Links/buttons */
-a {
-    display: inline-block;
+/* Links & buttons */
+a, button {
     text-decoration: none;
-    color: white;
-    background-color: #3498db;
+    cursor: pointer;
+}
+
+button {
     padding: 10px 20px;
-    border-radius: 6px;
-    margin: 10px 0;
-    transition: background-color 0.3s ease;
-}
-
-a:hover {
-    background-color: #2980b9;
-}
-
-/* Lists */
-ul {
-    list-style-type: none;
-    margin-top: 20px;
-}
-
-li {
-    background: #fff;
-    padding: 10px 15px;
-    margin-bottom: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
     border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: 0.2s;
 }
 
-/* Table for history page */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Forms */
+form {
+    background-color: white;
+    padding: 20px;
+    max-width: 400px;
+    margin: 50px auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    width: 100%;
+}
+
+/* Dashboard / history */
+.dashboard, .history {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.card {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card.green {
+    border-left: 5px solid #28a745;
+}
+
+.card.red {
+    border-left: 5px solid #dc3545;
+}
+
+.card span.timestamp {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Table styling for history */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background: #fff;
-    border-radius: 5px;
+    background-color: white;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 th, td {
-    padding: 12px 15px;
+    padding: 10px;
     text-align: left;
 }
 
 th {
-    background-color: #3498db;
+    background-color: #007bff;
     color: white;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f4f4f4;
 }
 
-/* Footer spacing */
-body > a:last-child {
-    margin-bottom: 50px;
+/* Center links */
+a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #007bff;
 }
