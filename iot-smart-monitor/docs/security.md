@@ -1,22 +1,21 @@
-# Security Considerations
+# Security Plan
 
-## IoT Device Access
-- Devices will use encrypted communication with PubNub.
-- Devices require authentication keys.
+## IoT Device
+- Device access protected with strong passwords
+- SSH key authentication for Raspberry Pi
+- No hardcoded keys in code
 
-## PubNub Channels
-- Publish and subscribe channels are secured with PubNub keys.
-- Only registered devices can publish messages.
+## PubNub
+- Channels secured with publish/subscribe keys
+- Avoid exposing keys publicly
+- Use token-based access in production
 
-## Database Security
-- Database access requires strong password.
-- Use SQLAlchemy ORM to prevent SQL injection.
-- Data at rest will be encrypted if using MySQL in production.
+## Database
+- Use strong passwords for MySQL
+- Store hashed passwords (bcrypt) for users
+- Limit access to backend only
 
-## Webserver Security
-- Flask app will run behind HTTPS (SSL certificate from Let's Encrypt).
-- API endpoints will require authentication tokens in production.
-
-## Data in Transit
-- All communication between devices and server uses secure PubNub channels.
-- Webserver uses HTTPS to protect user data.
+## Webserver / HTTPS
+- Apache or Nginx with WSGI
+- Redirect HTTP → HTTPS
+- Enable firewall to allow only required ports
