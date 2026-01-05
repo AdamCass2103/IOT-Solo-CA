@@ -1,19 +1,37 @@
 # backend/pubnub_listener.py
-from config import PUBNUB_SUBSCRIBE_KEY, MOTION_CHANNEL
 
-def handle_motion_event(message):
-    """
-    This function will handle motion messages from PubNub
-    Currently, just prints the message
-    """
-    print("Received motion message:", message)
+from pubnub.pnconfiguration import PNConfiguration
+from pubnub.pubnub import PubNub
+from pubnub.callbacks import SubscribeCallback
+from models import db, MotionEvent
+from config import PUBNUB_PUBLISH_KEY, PUBNUB_SUBSCRIBE_KEY, MOTION_CHANNEL
+from flask import Flask
 
-def subscribe_to_channel():
-    """
-    Placeholder for PubNub subscription
-    """
-    print(f"Would subscribe to channel: {MOTION_CHANNEL} with key {PUBNUB_SUBSCRIBE_KEY}")
+# Flask app context
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///motion.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
-if __name__ == "__main__":
-    subscribe_to_channel()
-    # Later: use PubNub SDK to actually subscribe and call handle_motion_event on new messages
+# PubNub config
+pnconfig = PNConfiguration()
+pnconfig.publish_key = PUBNUB_PUBLISH_KEY
+pnconfig.subscribe_key = PUBNUB_SUBSCRIBE_KEY
+pnconfig.uuid = "backend-listener"
+pubnub = PubNub(pnconfig)
+
+class MotionListener(SubscribeCallback):
+    def message(self, pubnub, message):
+        data = message.message
+        print(f"Received motion event: {data}")
+        with app.app_context():
+            event = MotionEvent(
+                detected=data.get("detected", False)
+            )
+            db.session.add(event)
+            db.session.commit()
+
+pubnub.add_listener(MotionListener())
+pubnub.subscribe().channels(MOTION_CHANNEL).execute()
+
+print("Backend listening for motion events...")

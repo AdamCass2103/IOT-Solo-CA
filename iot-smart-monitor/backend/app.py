@@ -4,26 +4,32 @@ from models import db, MotionEvent
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# Tell Flask where the templates are
+# -----------------------
+# Flask App Setup
+# -----------------------
 template_dir = os.path.join(BASE_DIR, '..', 'frontend', 'templates')
 static_dir = os.path.join(BASE_DIR, '..', 'frontend', 'static')
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
-# Config (ready for AWS later)
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-secret-key")
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.getenv("DATABASE_URL") or
-    "sqlite:///" + os.path.join(BASE_DIR, "motion.db")
-)
+# -----------------------
+# Database Config (MySQL)
+# -----------------------
+MYSQL_USER = os.getenv("MYSQL_USER", "root")           # XAMPP root user
+MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "")       # root password (blank if none)
+MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")      # localhost
+MYSQL_DB = os.getenv("MYSQL_DB", "iot_motion_monitor") # your database
+
+# SQLAlchemy URI for MySQL
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-secret-key")
 
 db.init_app(app)
 
 # -----------------------
 # ROUTES
 # -----------------------
-
 @app.route("/")
 @app.route("/login")
 def login():
@@ -33,7 +39,6 @@ def login():
 def signup():
     return render_template("signup.html")
 
-# Temporary dashboard shortcut (no login required)
 @app.route("/dashboard-shortcut")
 def dashboard_shortcut():
     return redirect(url_for("dashboard"))
@@ -56,10 +61,9 @@ def test_insert():
     return redirect(url_for("dashboard"))
 
 # -----------------------
-# RUN
+# RUN APP
 # -----------------------
-
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()
+        db.create_all()  # creates tables in MySQL if they don't exist
     app.run(debug=True)

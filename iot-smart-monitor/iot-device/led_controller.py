@@ -1,23 +1,23 @@
 # iot-device/led_listener.py
-import time
-# from pubnub.pubnub import PubNub
-# from pubnub.callbacks import SubscribeCallback
-from config import LED_CHANNEL
 
-def led_react(motion_detected):
-    if motion_detected:
-        print("LED ON (motion detected)")
-    else:
-        print("LED OFF (no motion)")
+from pubnub.pnconfiguration import PNConfiguration
+from pubnub.pubnub import PubNub
+from pubnub.callbacks import SubscribeCallback
+from config import PUBNUB_PUBLISH_KEY, PUBNUB_SUBSCRIBE_KEY, LED_CHANNEL
 
-def listen_for_motion():
-    """
-    Simulate listening for motion events
-    """
-    motions = [True, False, True, False]  # Example sequence
-    for motion in motions:
-        led_react(motion)
-        time.sleep(2)  # Wait 2 seconds between reactions
+# Configure PubNub
+pnconfig = PNConfiguration()
+pnconfig.publish_key = PUBNUB_PUBLISH_KEY
+pnconfig.subscribe_key = PUBNUB_SUBSCRIBE_KEY
+pnconfig.uuid = "led-listener-001"
+pubnub = PubNub(pnconfig)
 
-if __name__ == "__main__":
-    listen_for_motion()
+class LEDListener(SubscribeCallback):
+    def message(self, pubnub, message):
+        print(f"LED Command Received: {message.message}")
+        # Here you can add GPIO code later to control an LED
+
+pubnub.add_listener(LEDListener())
+pubnub.subscribe().channels(LED_CHANNEL).execute()
+
+print("Listening for LED commands...")
