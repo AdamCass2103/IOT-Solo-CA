@@ -6,28 +6,39 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <header>
+    <header class="mb-4 text-center">
         <h1>Automatic Chicken Feeder Dashboard</h1>
     </header>
 
     <div class="container">
-        <a href="{{ url_for('test_insert') }}" class="btn">Simulate Motion</a>
-        <a href="{{ url_for('history') }}" class="btn">View History</a>
-        <a href="{{ url_for('login') }}" class="btn btn-secondary mt-3">Back to Login</a>
+        <!-- Action Buttons -->
+        <div class="mb-4">
+            <a href="{{ url_for('test_insert') }}" class="btn btn-success">Simulate Motion</a>
+            <a href="{{ url_for('history') }}" class="btn btn-primary">View History</a>        
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+        </div>
 
-        <div class="mt-4">
+        <!-- Motion Events -->
+        <div class="row">
             {% if events %}
-            <div class="row">
                 {% for event in events %}
-                <div class="col-md-4">
-                    <div class="card">
-                        Motion detected at <strong>{{ event.timestamp }}</strong>
+                <div class="col-md-4 mb-3">
+                    <div class="card p-3">
+                        <p><strong>Time:</strong> {{ event.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                        <p><strong>Motion Detected:</strong> {{ 'Yes' if event.detected else 'No' }}</p>
+                        <p><strong>LED State:</strong> 
+                            <span style="color: {{ 'green' if event.led_state else 'red' }};">
+                                {{ 'ON' if event.led_state else 'OFF' }}
+                            </span>
+                        </p>
+                        <a href="{{ url_for('toggle_led', event_id=event.id) }}" class="btn btn-sm">
+                            Toggle LED
+                          </a>
                     </div>
                 </div>
                 {% endfor %}
-            </div>
             {% else %}
-            <p>No motion detected yet.</p>
+                <p>No motion detected yet.</p>
             {% endif %}
         </div>
     </div>

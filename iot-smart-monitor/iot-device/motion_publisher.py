@@ -28,4 +28,3 @@ if __name__ == "__main__":
         detected = random.choice([True, False])
         publish_motion(detected)
         time.sleep(5)
-
