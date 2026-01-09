@@ -12,8 +12,8 @@ app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 # -----------------------
 # MySQL CONFIG
 # -----------------------
-MYSQL_USER = "root"
-MYSQL_PASSWORD = ""
+MYSQL_USER = "flaskuser"
+MYSQL_PASSWORD = "Str0ngP@ssw0rd!"
 MYSQL_HOST = "127.0.0.1"
 MYSQL_DB = "iot_motion_monitor"
 
@@ -119,3 +119,5 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+
