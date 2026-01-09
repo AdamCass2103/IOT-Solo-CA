@@ -13,10 +13,11 @@ app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 # MySQL CONFIG
 # -----------------------
 MYSQL_USER = "flaskuser"
-MYSQL_PASSWORD = "Str0ngP@ssw0rd!"
+MYSQL_PASSWORD = ""
 MYSQL_HOST = "127.0.0.1"
 MYSQL_DB = "iot_motion_monitor"
 
+print("Using DB config:", MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_DB)
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}"
 )
