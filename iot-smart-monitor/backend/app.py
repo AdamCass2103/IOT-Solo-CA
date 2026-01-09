@@ -19,8 +19,9 @@ MYSQL_DB = "iot_motion_monitor"
 
 print("Using DB config:", MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_DB)
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}"
+    "mysql+pymysql://root@localhost/iot_motion_monitor"
 )
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "dev-secret-key"
 
@@ -119,6 +120,6 @@ def logout():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
 
